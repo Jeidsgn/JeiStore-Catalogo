@@ -242,7 +242,7 @@ function router() {
 // ============================================================
 async function loadData() {
   // Verificación para saber si ya lo configuraste
-  if (!CONFIG.scriptUrl || CONFIG.scriptUrl === "https://script.google.com/macros/s/AKfycbz5bc1p-6xhapN-957WzJ4Ygf39bVjeyojc3iZKYiT60C0jmKRh_SFspYRIzDvTduXehg/exec") {
+  if (!CONFIG.scriptUrl || CONFIG.scriptUrl === "PEGAR_AQUI_TU_NUEVA_URL_DE_APPS_SCRIPT" || CONFIG.scriptUrl === "") {
     console.warn("Aún no has configurado tu scriptUrl de Google. Usando base de datos estática de prueba.");
     appData = STATIC_DATA;
     router();
