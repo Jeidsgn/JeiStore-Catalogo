@@ -106,16 +106,16 @@ function escapeHtml(str) {
 function renderCategorias() {
   const cats = appData.categorias.sort((a, b) => (a.orden || 0) - (b.orden || 0));
   const html = `
-      <h1>Colecciones</h1>
+      <h1>Colecciones Jei Store</h1>
       <div class="grid">
         ${cats.map(cat => {
-          // Extraer la primera foto válida del primer producto de la categoría
-          const primerProd = appData.productos.find(p => p.categoria_id == cat.id && p.fotos_ids && p.fotos_ids.length > 0);
-          const imgHtml = primerProd 
-            ? `<img class="card-img" src="${getImageUrl(primerProd.fotos_ids[0])}" alt="${escapeHtml(cat.nombre)}" loading="lazy">`
-            : `<div class="card-img" style="background:#eaeef3; display:flex; align-items:center; justify-content:center; font-size:3rem;">🖼️</div>`;
-          
-          return `
+    // Extraer la primera foto válida del primer producto de la categoría
+    const primerProd = appData.productos.find(p => p.categoria_id == cat.id && p.fotos_ids && p.fotos_ids.length > 0);
+    const imgHtml = primerProd
+      ? `<img class="card-img" src="${getImageUrl(primerProd.fotos_ids[0])}" alt="${escapeHtml(cat.nombre)}" loading="lazy">`
+      : `<div class="card-img" style="background:#eaeef3; display:flex; align-items:center; justify-content:center; font-size:3rem;">🖼️</div>`;
+
+    return `
           <div class="card" data-nav="categoria/${cat.id}">
             ${imgHtml}
             <h3>${escapeHtml(cat.nombre)}</h3>
@@ -179,8 +179,8 @@ function renderDetalleProducto(productoId) {
   const catObj = appData.categorias.find(c => c.id == categoriaId);
   const nombreParaMsj = catObj ? `${prod.nombre} (${catObj.nombre})` : prod.nombre;
 
-  const mensaje = prod.disponible 
-    ? `Hola, me interesa el artículo: ${nombreParaMsj}` 
+  const mensaje = prod.disponible
+    ? `Hola, me interesa el artículo: ${nombreParaMsj}`
     : `Hola, me gustaría saber si volverán a tener disponible el artículo: ${nombreParaMsj}`;
   const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
 
