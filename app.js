@@ -108,15 +108,20 @@ function renderCategorias() {
   const html = `
       <h1>Colecciones</h1>
       <div class="grid">
-        ${cats.map(cat => `
+        ${cats.map(cat => {
+          // Extraer la primera foto válida del primer producto de la categoría
+          const primerProd = appData.productos.find(p => p.categoria_id == cat.id && p.fotos_ids && p.fotos_ids.length > 0);
+          const imgHtml = primerProd 
+            ? `<img class="card-img" src="${getImageUrl(primerProd.fotos_ids[0])}" alt="${escapeHtml(cat.nombre)}" loading="lazy">`
+            : `<div class="card-img" style="background:#eaeef3; display:flex; align-items:center; justify-content:center; font-size:3rem;">🖼️</div>`;
+          
+          return `
           <div class="card" data-nav="categoria/${cat.id}">
-            <div class="card-img" style="background:#eaeef3; display:flex; align-items:center; justify-content:center; font-size:3rem;">
-              🖼️
-            </div>
+            ${imgHtml}
             <h3>${escapeHtml(cat.nombre)}</h3>
             <p>${escapeHtml(cat.descripcion || '')}</p>
           </div>
-        `).join('')}
+        `}).join('')}
       </div>
     `;
   document.getElementById('app').innerHTML = html;
