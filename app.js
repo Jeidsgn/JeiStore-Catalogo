@@ -119,7 +119,6 @@ function renderCategorias() {
           <div class="card" data-nav="categoria/${cat.id}">
             ${imgHtml}
             <h3>${escapeHtml(cat.nombre)}</h3>
-            <p>${escapeHtml(cat.descripcion || '')}</p>
           </div>
         `}).join('')}
       </div>
@@ -141,6 +140,7 @@ function renderProductosPorCategoria(categoriaId) {
   const html = `
       <button class="back-button" data-nav="/">← Volver a categorías</button>
       <h1>${escapeHtml(cat.nombre)}</h1>
+      ${cat.descripcion ? `<p class="category-description">${escapeHtml(cat.descripcion)}</p>` : ''}
       <div class="grid">
         ${productosFiltrados.map(prod => {
     const primeraFoto = prod.fotos_ids[0] || '';

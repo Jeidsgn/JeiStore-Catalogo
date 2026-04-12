@@ -130,6 +130,13 @@
       line-height: 1.5;
     }
 
+    .category-description {
+      font-size: 1.1rem;
+      color: #5e5e5e;
+      margin-bottom: 2rem;
+      max-width: 800px;
+    }
+
     /* Botón WhatsApp */
     .whatsapp-btn {
       display: inline-block;
