@@ -175,7 +175,13 @@ function renderDetalleProducto(productoId) {
 
   const formatPrecio = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(prod.precio || 0);
 
-  const mensaje = prod.disponible ? `Hola, me interesa ${prod.nombre}` : `Hola, me gustaría saber si volverán a tener disponible ${prod.nombre}`;
+  // Buscar el nombre de la categoría para adjuntar al mensaje
+  const catObj = appData.categorias.find(c => c.id == categoriaId);
+  const nombreParaMsj = catObj ? `${prod.nombre} (${catObj.nombre})` : prod.nombre;
+
+  const mensaje = prod.disponible 
+    ? `Hola, me interesa el artículo: ${nombreParaMsj}` 
+    : `Hola, me gustaría saber si volverán a tener disponible el artículo: ${nombreParaMsj}`;
   const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
 
   const botonHtml = prod.disponible
