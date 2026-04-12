@@ -63,22 +63,25 @@ const STATIC_DATA = {
   ]
 };
 
-// Configuración (número de WhatsApp + mensaje base)
+// Configuración (número de WhatsApp + URL de Google Apps Script)
 const CONFIG = {
-  whatsappNumber: "573001234567",   // Código de país + número (sin '+' ni espacios)
-  // La función para generar el mensaje se usa en detalle
+  whatsappNumber: "573134098921",   // Código de país + número (sin '+' ni espacios)
+  scriptUrl: "https://script.google.com/macros/s/AKfycbz5bc1p-6xhapN-957WzJ4Ygf39bVjeyojc3iZKYiT60C0jmKRh_SFspYRIzDvTduXehg/execT"
 };
 
-// Helper para generar URL de imagen (simulada, porque en el MVP no tenemos imágenes reales)
-// Esto luego se reemplazará por: `https://drive.google.com/uc?export=view&id=${fotoId}`
+// Helper para generar URL de imagen (Detecta simuladas vs reales)
 function getImageUrl(photoId) {
-  // Para el MVP usamos imágenes placeholder de Unsplash con distintos colores según el ID
-  // Así se ve visualmente distinto cada producto.
-  const hash = Math.abs(photoId.split('').reduce((a, b) => a + b.charCodeAt(0), 0));
-  const color = `bg=${hash % 360},80,70&fg=ffffff&text=${encodeURIComponent(photoId.slice(0, 8))}`;
-  return `https://placehold.co/400x400?${color}`;
-  // NOTA: Cuando tengas Google Drive, cambia por:
-  // return `https://drive.google.com/uc?export=view&id=${photoId}`;
+  if (!photoId) return '';
+
+  // Verifica si es uno de nuestros IDs ficticios de prueba
+  if (photoId.includes('lampara_') || photoId.includes('macetero_') || photoId.includes('textil_')) {
+    const hash = Math.abs(photoId.split('').reduce((a, b) => a + b.charCodeAt(0), 0));
+    const color = `bg=${hash % 360},80,70&fg=ffffff&text=${encodeURIComponent(photoId.slice(0, 8))}`;
+    return `https://placehold.co/400x400?${color}`;
+  }
+
+  // URL Dinámica final (Conectando a Google Drive)
+  return `https://drive.google.com/uc?export=view&id=${photoId.trim()}`;
 }
 
 // Estado de la aplicación
@@ -170,7 +173,7 @@ function renderDetalleProducto(productoId) {
   const mensaje = prod.disponible ? `Hola, me interesa ${prod.nombre}` : `Hola, me gustaría saber si volverán a tener disponible ${prod.nombre}`;
   const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
 
-  const botonHtml = prod.disponible 
+  const botonHtml = prod.disponible
     ? `<a href="${whatsappUrl}" target="_blank" class="whatsapp-btn">📲 Hacer pedido</a>`
     : `<a href="${whatsappUrl}" target="_blank" class="whatsapp-btn btn-agotado">Consultar disponibilidad</a>`;
 
@@ -235,24 +238,29 @@ function router() {
 }
 
 // ============================================================
-// 3. CARGA DE DATOS (ahora estáticos, luego dinámicos)
-//    Aquí es donde conectarás con Google Apps Script
+// 3. CARGA DE DATOS (Dinámicos vía API)
 // ============================================================
 async function loadData() {
-  // ==== PARA EL MVP: datos estáticos inmediatos ====
-  // Más adelante, descomenta y borra la línea de STATIC_DATA:
-  /*
+  // Verificación para saber si ya lo configuraste
+  if (!CONFIG.scriptUrl || CONFIG.scriptUrl === "PEGAR_AQUI_TU_NUEVA_URL_DE_APPS_SCRIPT") {
+    console.warn("Aún no has configurado tu scriptUrl de Google. Usando base de datos estática de prueba.");
+    appData = STATIC_DATA;
+    router();
+    return;
+  }
+
+  // Si ya asignaste tu URL, hacemos la descarga mágica:
   try {
-    const response = await fetch('https://script.google.com/macros/s/TU_ID/exec');
-    if (!response.ok) throw new Error('Error en la red');
+    const response = await fetch(CONFIG.scriptUrl);
+    if (!response.ok) throw new Error('Error en la red al descargar los datos de tu Google Sheets.');
     appData = await response.json();
   } catch (error) {
-    console.error('Falló la carga desde Google Apps Script, usando datos estáticos de respaldo', error);
-    appData = STATIC_DATA;
+    console.error('Falló la conexión con tu Apps Script. Se revertirá a los datos estáticos temporalmente.', error);
+    appData = STATIC_DATA; // Fallback de emergencia
   }
-  */
-  appData = STATIC_DATA;  // <-- Reemplazar por fetch cuando tengas la API
-  router(); // una vez cargados, renderizar según hash actual
+
+  // Renderizar una vez haya terminado
+  router();
 }
 
 // Escuchar cambios de hash
