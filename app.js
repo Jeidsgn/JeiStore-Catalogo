@@ -80,8 +80,8 @@ function getImageUrl(photoId) {
     return `https://placehold.co/400x400?${color}`;
   }
 
-  // URL Dinámica final (Conectando a Google Drive)
-  return `https://drive.google.com/uc?export=view&id=${photoId.trim()}`;
+  // URL Dinámica final (Usamos el endpoint de thumbnail de Google para evitar bloqueos de seguridad al embeber)
+  return `https://drive.google.com/thumbnail?id=${photoId.trim()}&sz=w1000`;
 }
 
 // Estado de la aplicación
