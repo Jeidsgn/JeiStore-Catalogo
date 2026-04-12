@@ -113,6 +113,7 @@
       background: #fafafa;
       flex-shrink: 0;
       object-fit: cover;
+      cursor: zoom-in;
     }
 
     .product-detail h1 {
@@ -230,6 +231,53 @@
 
     .instagram-btn:hover {
       opacity: 0.8;
+    }
+
+    /* Modal / Zoom de Imágenes */
+    .image-modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1000; 
+      padding-top: 50px; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      background-color: rgba(0,0,0,0.9); 
+    }
+    
+    .modal-content {
+      margin: auto;
+      display: block;
+      width: 90%;
+      max-width: 800px;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 4px;
+      animation: zoomIn 0.3s ease;
+    }
+    
+    @keyframes zoomIn {
+      from {transform:scale(0.8); opacity:0;}
+      to {transform:scale(1); opacity:1;}
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .close-modal:hover,
+    .close-modal:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
     }
 
     /* Responsive */

@@ -191,6 +191,18 @@ function renderDetalleProducto(productoId) {
     `;
   document.getElementById('app').innerHTML = html;
   attachCardNavigation();
+
+  // Activar zoom de imágenes en el modal
+  document.querySelectorAll('.detail-gallery img').forEach(img => {
+    img.addEventListener('click', (e) => {
+      const modal = document.getElementById('image-modal');
+      const modalImg = document.getElementById('zoomed-image');
+      if (modal && modalImg) {
+        modal.style.display = "block";
+        modalImg.src = e.target.src;
+      }
+    });
+  });
 }
 
 // Función que agrega eventos a cualquier elemento con data-nav
@@ -245,6 +257,24 @@ async function loadData() {
 
 // Escuchar cambios de hash
 window.addEventListener('hashchange', router);
+
+// Gestión del Modal Global
+const globalModal = document.getElementById('image-modal');
+const closeModalBtn = document.querySelector('.close-modal');
+
+if (closeModalBtn) {
+  closeModalBtn.addEventListener('click', () => {
+    globalModal.style.display = "none";
+  });
+}
+
+if (globalModal) {
+  globalModal.addEventListener('click', (e) => {
+    if (e.target === globalModal) {
+      globalModal.style.display = "none";
+    }
+  });
+}
 
 // Iniciar
 loadData();
