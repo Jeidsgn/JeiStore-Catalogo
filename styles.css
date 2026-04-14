@@ -218,6 +218,69 @@
       background-color: #4b5563;
     }
 
+    /* Técnicas y Materiales */
+    .product-tecnicas {
+      margin: 1.5rem 0;
+      padding: 1.25rem 1.5rem;
+      background: #f8f8f8;
+      border-radius: 0.75rem;
+      border-left: 3px solid #d1d5db;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 0.75rem;
+      border-left: none;
+      padding-left: 0;
+    }
+
+    .tecnicas-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tecnicas-list li {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 2rem;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.875rem;
+      color: #374151;
+    }
+
+    /* Botón de Video */
+    .product-video {
+      margin: 1.25rem 0;
+    }
+
+    .video-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #111827;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.75rem;
+      border-radius: 2.5rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .video-btn:hover {
+      background: #374151;
+    }
+
     /* Footer Social */
     .social-footer {
       text-align: center;

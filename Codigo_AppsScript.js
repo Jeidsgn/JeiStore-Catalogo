@@ -13,18 +13,37 @@ function doGet(e) {
 
   // Procesamiento especial para los productos
   prodData.forEach(p => {
-    // Transformar los IDs separados por comas en una lista real para JavaScript
+    // Transformar fotos_ids separados por comas en array
     if (p.fotos_ids) {
       if (typeof p.fotos_ids === 'string') {
-         p.fotos_ids = p.fotos_ids.split(',').map(id => id.trim()).filter(id => id !== '');
+        p.fotos_ids = p.fotos_ids.split(',').map(id => id.trim()).filter(id => id !== '');
       } else {
-         p.fotos_ids = [String(p.fotos_ids).trim()]; 
+        p.fotos_ids = [String(p.fotos_ids).trim()];
       }
     } else {
       p.fotos_ids = [];
     }
-    
-    // Asegurar que 'disponible' sea interpretado como boolean (verdadero o falso)
+
+    // Transformar tecnicas_materiales separados por comas en array
+    if (p.tecnicas_materiales) {
+      if (typeof p.tecnicas_materiales === 'string') {
+        p.tecnicas_materiales = p.tecnicas_materiales.split(',').map(t => t.trim()).filter(t => t !== '');
+      } else {
+        p.tecnicas_materiales = [String(p.tecnicas_materiales).trim()];
+      }
+    } else {
+      p.tecnicas_materiales = [];
+    }
+
+    // Limpiar video_url (dejar vacío si la celda está en blanco)
+    if (p.video_url !== undefined) {
+      p.video_url = String(p.video_url).trim();
+      if (p.video_url === '' || p.video_url === '0') p.video_url = '';
+    } else {
+      p.video_url = '';
+    }
+
+    // Asegurar que 'disponible' sea interpretado como boolean
     if (p.disponible !== undefined) {
       p.disponible = (p.disponible === true || String(p.disponible).toUpperCase() === 'TRUE');
     }

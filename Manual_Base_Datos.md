@@ -36,18 +36,20 @@ En la primera fila (los encabezados) ingresa los siguientes nombres exactos:
 ### Pestaña 2: `productos`
 Crea otra pestaña haciendo clic en el `+` de abajo, llámala `productos` y nombra la primera fila exactamente con estos encabezados:
 
-| id | categoria_id | nombre | descripcion_larga | fotos_ids | orden | precio | disponible |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 101 | 1           | Tula Playera | Excelente material con bolsillos. | *`ID_foto1`*, *`ID_foto2`* | 1     | 85000  | TRUE |
+| id | categoria_id | nombre | descripcion_larga | fotos_ids | orden | precio | disponible | tecnicas_materiales | video_url |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 101 | 1 | Tula Playera | Excelente material con bolsillos. | *`ID_foto1`*, *`ID_foto2`* | 1 | 85000 | TRUE | Tejido a mano, Fique natural | https://... |
 
 * **`id`:** Identificador único numérico para este producto (ej: 101, 102).
 * **`categoria_id`:** El número de la categoría a la que pertenece (el mismo número de la columna `id` de tu hoja `categorias`).
 * **`nombre`:** Nombre completo a mostrar del producto.
-* **`descripcion_larga`:** El contenido descriptivo principal (puedes usar la combinación `Alt + Enter` en Windows sobre una celda para separar líneas o crear puntos).
-* **`fotos_ids`:** Los IDs de tu Google Drive separados **únicamente con coma y sin espacios** adicionales (ej: `1wXYZ, 2aBCD, v7HjkL`).
+* **`descripcion_larga`:** El contenido descriptivo principal (puedes usar la combinación `Alt + Enter` en Windows sobre una celda para separar líneas).
+* **`fotos_ids`:** Los IDs de tu Google Drive separados **únicamente con coma** (ej: `1wXYZ,2aBCD,v7HjkL`).
 * **`orden`:** Posición en la que quieres que salga en la vista de la categoría (1 sale de primeras).
-* **`precio`:** Únicamente el valor en formato liso numérico sin decimales (Ej: `120000`. No pongas ni signos `$` ni puntos, la página le dará formato al leerlo).
-* **`disponible`:** Ingresa exactamente el valor booleano en inglés `TRUE` (sí hay unidades disponibles) o `FALSE` (está agotado de manera oficial).
+* **`precio`:** Solo el valor numérico sin decimales (ej: `120000`). No pongas `$` ni puntos, la página le dará formato automáticamente.
+* **`disponible`:** Ingresa `TRUE` (hay unidades) o `FALSE` (agotado).
+* **`tecnicas_materiales`:** Lista de técnicas o materiales separados por coma (ej: `Tejido a mano, Fique natural, Tinte vegetal`). Se mostrará como etiquetas en la ficha del producto. **Dejar vacío si no aplica.**
+* **`video_url`:** URL completa a un video del proceso en redes sociales (Instagram, TikTok, YouTube, etc.). Se mostrará como un botón "Ver video del proceso". **Dejar vacío si el producto no tiene video.**
 
 ---
 

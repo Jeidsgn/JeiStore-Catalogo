@@ -1,116 +1,111 @@
-```markdown
-# Galería Minimalista · Catálogo de productos
+# Catálogo JeiStore
 
-Sitio web tipo catálogo / tienda virtual (sin carrito) con vista por categorías, galería de productos y botón de contacto directo por WhatsApp.  
-Desarrollado como **MVP estático**, preparado para evolucionar hacia un **backend dinámico gestionado desde Google Drive + Google Sheets + Apps Script**.
+Catálogo virtual sin carrito para pequeños negocios. Navega por categorías, explora productos con galería de fotos y contacta directamente al vendedor por WhatsApp.
 
-## Estado actual del proyecto
-
-✅ **Versión actual: MVP estático**  
-- Frontend completo con HTML, CSS y JavaScript puro.  
-- Datos de ejemplo incluidos (categorías, productos, descripciones, IDs de imágenes simuladas).  
-- Navegación por hash (compatible con GitHub Pages).  
-- Botón "Hacer pedido" que abre WhatsApp con mensaje predefinido: `"Hola, me interesa [nombre del producto]"`.  
-- Diseño minimalista tipo Notion (grid, tarjetas, galería de imágenes en detalle).  
-- Totalmente responsive y autocontenido en un solo archivo `index.html`.
-
-**Limitaciones actuales**:  
-- Las imágenes son placeholders (no se integran con Google Drive).  
-- Los datos son estáticos (cambios requieren editar el código).  
-- No hay conexión con ningún servicio externo.
+Alojado en **GitHub Pages** y gestionado desde **Google Sheets**.
 
 ---
 
-## Objetivo a futuro 🚀
+## Estado del proyecto
 
-Convertir el sitio en una **web dinámica autogestionable** usando únicamente servicios gratuitos:
+✅ **Versión dinámica activa** — Los datos se cargan en tiempo real desde Google Sheets via Google Apps Script.
 
-| Componente | Rol futuro |
-|------------|-------------|
-| **Google Sheets** | Base de datos (categorías, productos, descripciones, IDs de fotos). |
-| **Google Drive** | Almacenamiento de imágenes (subir y compartir públicamente). |
-| **Google Apps Script** | API personalizada que lee Sheets y Drive, y devuelve JSON. |
-| **GitHub Pages** | Sigue siendo el alojamiento del frontend. |
-
-### Flujo futuro (dinámico)
-
-1. El administrador edita los productos en **Google Sheets** (nombre, descripción, categoría, IDs de fotos).
-2. Sube las imágenes a una carpeta de **Google Drive** y obtiene sus IDs.
-3. Un **Web App de Google Apps Script** expone los datos en formato JSON.
-4. El frontend (alojado en GitHub Pages) consume esa API y renderiza el catálogo dinámicamente.
-5. Los cambios en la hoja de cálculo se reflejan en la web en pocos minutos.
+| Tecnología | Rol |
+|---|---|
+| **GitHub Pages** | Hosting del frontend (HTML, CSS, JS) |
+| **Google Sheets** | Base de datos (categorías y productos) |
+| **Google Drive** | Almacenamiento de imágenes |
+| **Google Apps Script** | API que expone los Sheets como JSON |
 
 ---
 
-## Estructura de datos (futura)
+## Estructura de archivos
+
+```
+├── index.html              # Esqueleto HTML (SPA)
+├── styles.css              # Estilos globales
+├── app.js                  # Lógica, enrutamiento y renderizado
+├── Codigo_AppsScript.js    # Código del Web App (se pega en Apps Script)
+├── Manual_Base_Datos.md    # Guía para gestionar el inventario en Sheets
+└── Readme.md               # Este archivo
+```
+
+---
+
+## Flujo de datos
+
+```
+Google Sheets (inventario)
+        ↓
+Google Apps Script (Web App → JSON)
+        ↓
+app.js fetch() → renderizado en el navegador
+```
+
+---
+
+## Estructura de la base de datos (Google Sheets)
 
 ### Hoja `categorias`
 
-| id | nombre      | descripcion_corta | orden |
-|----|-------------|-------------------|-------|
-| 1  | Lámparas    | Iluminación artesanal | 1 |
+| id | nombre | descripcion | orden |
+|---|---|---|---|
+| 1 | Tulas | Descripción corta | 1 |
 
 ### Hoja `productos`
 
-| id | categoria_id | nombre        | descripcion_larga | fotos_ids              | orden |
-|----|--------------|---------------|-------------------|------------------------|-------|
-| 1  | 1            | Lámpara Aro   | Metal y madera... | abc123, def456, ghi789 | 1     |
+| id | categoria_id | nombre | descripcion_larga | fotos_ids | orden | precio | disponible | tecnicas_materiales | video_url |
+|---|---|---|---|---|---|---|---|---|---|
+| 101 | 1 | Tula Playera | Descripción... | `ID1,ID2` | 1 | 85000 | TRUE | Tejido a mano, Fique | https://... |
 
-- `fotos_ids`: IDs de Google Drive separados por comas (sin espacios).  
-- La imagen se muestra con: `https://drive.google.com/uc?export=view&id=ID`
-
----
-
-## Pasos para migrar a la versión dinámica
-
-Cuando estés listo para conectar con Google:
-
-1. **Crea el spreadsheet** con las hojas `categorias` y `productos` (estructura arriba).
-2. **Crea un proyecto de Google Apps Script** y pega el código proporcionado (en la documentación previa).
-3. **Publica el script como Web App** (acceso: cualquiera). Copia la URL.
-4. **En el frontend actual** (dentro de la función `loadData()`):
-   - Reemplaza `appData = STATIC_DATA;` por el `fetch` a la URL del Web App.
-   - Modifica `getImageUrl()` para que use `https://drive.google.com/uc?export=view&id=${photoId}`.
-5. **Configura el número de WhatsApp** en la variable `CONFIG.whatsappNumber`.
-6. **Sube tus imágenes a Drive**, compártelas públicamente y copia sus IDs en la columna `fotos_ids`.
+- **`fotos_ids`**: IDs de Google Drive separados por coma. La imagen se sirve vía `drive.google.com/thumbnail?id=ID`.
+- **`tecnicas_materiales`**: Técnicas o materiales separados por coma. Se muestran como etiquetas en la ficha del producto.
+- **`video_url`**: URL a video en redes sociales (Instagram, TikTok, YouTube). **Opcional** — dejar vacío si no hay video.
 
 ---
 
-## Requisitos técnicos
+## Configuración
 
-- **Actual**: navegador moderno (Chrome, Edge, Firefox, Safari).  
-- **Futuro**: cuenta de Google (para Sheets, Drive y Apps Script) y repositorio en GitHub.  
-- No se necesita servidor, base de datos propia ni dominio.
+Editar las dos variables en `app.js`:
+
+```js
+const CONFIG = {
+  whatsappNumber: "57XXXXXXXXXX",   // Código de país + número, sin '+' ni espacios
+  scriptUrl: "https://script.google.com/macros/s/..."  // URL de tu Web App publicada
+};
+```
 
 ---
 
-## Instalación y uso actual (MVP estático)
+## Actualizar el Apps Script
 
-1. Clona o descarga el archivo `index.html`.
-2. Ábrelo directamente en tu navegador o súbelo a GitHub Pages.
-3. Explora la galería de ejemplo:
-   - Categorías → Productos → Detalle del producto.
-   - Prueba el botón de WhatsApp (simulado, mensaje personalizado).
-4. Para modificar los datos de ejemplo, edita el objeto `STATIC_DATA` dentro del script.
+Cuando añadas nuevas columnas a la hoja `productos`, el script las recoge automáticamente (lee cabeceras dinámicamente). Solo necesitas actualizar el código manualmente si cambia la **lógica de parseo** de algún campo especial (actualmente: `fotos_ids`, `tecnicas_materiales`, `disponible`).
+
+Pasos para publicar o republicar:
+1. Abre el Apps Script desde Google Sheets → **Extensiones → Apps Script**.
+2. Pega el contenido de `Codigo_AppsScript.js`.
+3. **Implementar → Nueva implementación** (o _Administrar implementaciones_ para actualizar).
+4. Tipo: **Web App** — Acceso: **Cualquier persona**.
+5. Copia la URL y pégala en `CONFIG.scriptUrl` de `app.js`.
 
 ---
 
 ## Personalización
 
-- **Colores, fuentes y espaciado**: modifica las variables CSS en la etiqueta `<style>`.
-- **Número de WhatsApp**: cambia `CONFIG.whatsappNumber`.
-- **Mensaje del botón**: edita la línea `mensaje` dentro de `renderDetalleProducto()`.
-- **Placeholder de imágenes**: actualiza la función `getImageUrl()`.
+- **WhatsApp y API**: `CONFIG` al inicio de `app.js`.
+- **Colores y fuentes**: Variables en `styles.css`.
+- **Instagram del footer**: URL en `index.html`.
 
 ---
 
-## Créditos
+## Requisitos
 
-Desarrollado como solución híbrida (estática → dinámica) para pequeños negocios, emprendedores o artistas que necesitan un catálogo online sin costes de mantenimiento.
+- Cuenta de Google (Sheets, Drive, Apps Script).
+- Repositorio en GitHub con Pages habilitado.
+- No se necesita servidor ni dominio propio.
 
 ---
 
 ## Licencia
 
 MIT. Libre de usar, modificar y distribuir.
-```

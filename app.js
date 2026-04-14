@@ -1,91 +1,19 @@
 // ============================================================
-// 1. DATOS ESTÁTICOS (MVP)
-//    Estructura exactamente igual a la que devolverá Google Apps Script
-//    Más adelante reemplazarás este bloque por un fetch() a tu Web App
+// 1. CONFIGURACIÓN
 // ============================================================
-const STATIC_DATA = {
-  categorias: [
-    { id: 1, nombre: "Tulas", descripcion: "Iluminación cálida y artesanal", orden: 1 },
-    { id: 2, nombre: "Sombreros", descripcion: "Diseño minimalista para plantas", orden: 2 },
-    { id: 3, nombre: "Máscaras", descripcion: "Arte textil y abstracto", orden: 3 }
-  ],
-  productos: [
-    {
-      id: 101,
-      categoria_id: 1,
-      nombre: "Lámpara Aro",
-      descripcion_larga: "Estructura metálica en acabado negro mate. Pantalla de lino natural. Altura 35cm, diámetro 25cm. Bombilla LED incluida (3000K). Ideal para mesitas o consolas.",
-      fotos_ids: ["lampara_aro_1", "lampara_aro_2"],  // Estos IDs se usarán para generar URLs simuladas
-      orden: 1,
-      precio: 120000,
-      disponible: true
-    },
-    {
-      id: 102,
-      categoria_id: 1,
-      nombre: "Lámpara Nube",
-      descripcion_larga: "Pantalla de algodón orgánico en forma de nube. Cable textil trenzado. Bombilla E27 (no incluida). Crea un ambiente muy suave y onírico.",
-      fotos_ids: ["lampara_nube_1", "lampara_nube_2", "lampara_nube_3"],
-      orden: 2,
-      precio: 95000,
-      disponible: false
-    },
-    {
-      id: 201,
-      categoria_id: 2,
-      nombre: "Macetero Geo",
-      descripcion_larga: "Cerámica esmaltada en tono terracota. Forma hexagonal. Medidas: 15cm alto x 12cm ancho. Incluye plato a juego. Ideal para suculentas o cactus.",
-      fotos_ids: ["macetero_geo_1", "macetero_geo_2"],
-      orden: 1,
-      precio: 45000,
-      disponible: true
-    },
-    {
-      id: 202,
-      categoria_id: 2,
-      nombre: "Macetero Colgante",
-      descripcion_larga: "Cuerda de algodón trenzada con maceta de barro cocido. Sostiene plantas de hasta 2kg. Longitud 60cm. Muy resistente para interiores.",
-      fotos_ids: ["macetero_colgante_1"],
-      orden: 2,
-      precio: 38000,
-      disponible: true
-    },
-    {
-      id: 301,
-      categoria_id: 3,
-      nombre: "Composición Textil",
-      descripcion_larga: "Tapiz tejido a mano en telar. Lana de oveja y fibras naturales. Tamaño 80x60cm. Bastidor de madera incluido. Colores: beige, arena y terracota.",
-      fotos_ids: ["textil_1", "textil_2"],
-      orden: 1,
-      precio: 150000,
-      disponible: false
-    }
-  ]
-};
-
-// Configuración (número de WhatsApp + URL de Google Apps Script)
 const CONFIG = {
   whatsappNumber: "573134098921",   // Código de país + número (sin '+' ni espacios)
-  scriptUrl: "https://script.google.com/macros/s/AKfycbz5bc1p-6xhapN-957WzJ4Ygf39bVjeyojc3iZKYiT60C0jmKRh_SFspYRIzDvTduXehg/exec"
+  scriptUrl: "https://script.google.com/macros/s/AKfycbyXYJXKXchISU02q1GCoK0_DLm8Oj6rPbPa6GdZwonm6fK_UfHvswWSTDc4gRivxpA/exec"
 };
 
-// Helper para generar URL de imagen (Detecta simuladas vs reales)
+// Helper para generar URL de imagen desde Google Drive
 function getImageUrl(photoId) {
   if (!photoId) return '';
-
-  // Verifica si es uno de nuestros IDs ficticios de prueba
-  if (photoId.includes('lampara_') || photoId.includes('macetero_') || photoId.includes('textil_')) {
-    const hash = Math.abs(photoId.split('').reduce((a, b) => a + b.charCodeAt(0), 0));
-    const color = `bg=${hash % 360},80,70&fg=ffffff&text=${encodeURIComponent(photoId.slice(0, 8))}`;
-    return `https://placehold.co/400x400?${color}`;
-  }
-
-  // URL Dinámica final (Usamos el endpoint de thumbnail de Google para evitar bloqueos de seguridad al embeber)
   return `https://drive.google.com/thumbnail?id=${photoId.trim()}&sz=w1000`;
 }
 
 // Estado de la aplicación
-let appData = STATIC_DATA;   // Más tarde: appData = await fetch(URL_SCRIPT).then(r=>r.json())
+let appData = { categorias: [], productos: [] };
 
 // Helper para escapar HTML (seguridad)
 function escapeHtml(str) {
@@ -168,25 +96,41 @@ function renderDetalleProducto(productoId) {
     return;
   }
   const categoriaId = prod.categoria_id;
-  // Generar galería de imágenes
+
+  // Galería de imágenes
   const imagenesHtml = prod.fotos_ids.map(fid => `
       <img src="${getImageUrl(fid)}" alt="${escapeHtml(prod.nombre)}" loading="lazy">
     `).join('');
 
   const formatPrecio = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(prod.precio || 0);
 
-  // Buscar el nombre de la categoría para adjuntar al mensaje
+  // Mensaje WhatsApp
   const catObj = appData.categorias.find(c => c.id == categoriaId);
   const nombreParaMsj = catObj ? `${prod.nombre} (${catObj.nombre})` : prod.nombre;
-
   const mensaje = prod.disponible
     ? `Hola, me interesa el artículo: ${nombreParaMsj}`
     : `Hola, me gustaría saber si volverán a tener disponible el artículo: ${nombreParaMsj}`;
   const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
-
   const botonHtml = prod.disponible
     ? `<a href="${whatsappUrl}" target="_blank" class="whatsapp-btn">📲 Hacer pedido</a>`
     : `<a href="${whatsappUrl}" target="_blank" class="whatsapp-btn btn-agotado">Consultar disponibilidad</a>`;
+
+  // Técnicas y materiales (opcional)
+  const tecnicasHtml = prod.tecnicas_materiales && prod.tecnicas_materiales.length > 0
+    ? `<div class="product-tecnicas">
+        <h2 class="section-label">Técnicas y materiales</h2>
+        <ul class="tecnicas-list">
+          ${prod.tecnicas_materiales.map(t => `<li>${escapeHtml(t)}</li>`).join('')}
+        </ul>
+      </div>`
+    : '';
+
+  // Video de proceso (opcional)
+  const videoHtml = prod.video_url
+    ? `<div class="product-video">
+        <a href="${escapeHtml(prod.video_url)}" target="_blank" rel="noopener noreferrer" class="video-btn">🎬 Ver video del proceso</a>
+      </div>`
+    : '';
 
   const html = `
       <button class="back-button" data-nav="categoria/${categoriaId}">← Volver a productos</button>
@@ -200,6 +144,8 @@ function renderDetalleProducto(productoId) {
           <span class="tag detail-tag ${prod.disponible ? 'tag-disponible' : 'tag-agotado'}">${prod.disponible ? 'Disponible' : 'Agotado'}</span>
         </div>
         <div class="product-description">${escapeHtml(prod.descripcion_larga || '').replace(/\n/g, '<br>')}</div>
+        ${tecnicasHtml}
+        ${videoHtml}
         ${botonHtml}
       </div>
     `;
@@ -252,25 +198,16 @@ function router() {
 // 3. CARGA DE DATOS (Dinámicos vía API)
 // ============================================================
 async function loadData() {
-  // Verificación para saber si ya lo configuraste
-  if (!CONFIG.scriptUrl || CONFIG.scriptUrl === "PEGAR_AQUI_TU_NUEVA_URL_DE_APPS_SCRIPT" || CONFIG.scriptUrl === "") {
-    console.warn("Aún no has configurado tu scriptUrl de Google. Usando base de datos estática de prueba.");
-    appData = STATIC_DATA;
-    router();
-    return;
-  }
-
-  // Si ya asignaste tu URL, hacemos la descarga mágica:
+  const appEl = document.getElementById('app');
   try {
     const response = await fetch(CONFIG.scriptUrl);
-    if (!response.ok) throw new Error('Error en la red al descargar los datos de tu Google Sheets.');
+    if (!response.ok) throw new Error(`Error HTTP ${response.status}`);
     appData = await response.json();
   } catch (error) {
-    console.error('Falló la conexión con tu Apps Script. Se revertirá a los datos estáticos temporalmente.', error);
-    appData = STATIC_DATA; // Fallback de emergencia
+    console.error('Error al conectar con Google Sheets:', error);
+    if (appEl) appEl.innerHTML = `<p style="color:#ef4444;text-align:center;padding:4rem;">No se pudo cargar el catálogo. Intenta recargar la página.</p>`;
+    return;
   }
-
-  // Renderizar una vez haya terminado
   router();
 }
 
