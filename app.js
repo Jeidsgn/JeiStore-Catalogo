@@ -3,7 +3,7 @@
 // ============================================================
 const CONFIG = {
   whatsappNumber: "573134098921",   // Código de país + número (sin '+' ni espacios)
-  scriptUrl: "https://script.google.com/macros/s/AKfycbyXYJXKXchISU02q1GCoK0_DLm8Oj6rPbPa6GdZwonm6fK_UfHvswWSTDc4gRivxpA/exec"
+  scriptUrl: "https://script.google.com/macros/s/AKfycbwuq0fQIwvNgFuDSlHHqxl5qNSI8qJsiDKghKx5Axz-wb6LBJim-SLcc8px-q5ahRaDmw/exec"
 };
 
 // Helper para generar URL de imagen desde Google Drive
