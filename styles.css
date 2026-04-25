@@ -5,9 +5,9 @@
     }
 
     body {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      background: #fefefe;
-      color: #1a1a1a;
+      font-family: 'Cambria', 'Times New Roman', serif;
+      background: #121212;
+      color: #e5e5e5;
       padding: 2rem 1.5rem;
       line-height: 1.4;
     }
@@ -19,8 +19,9 @@
 
     /* Tipografía minimalista */
     h1 {
+      font-family: 'Century Gothic', 'Century Gothic', 'CenturyGothic', 'Arial Narrow', 'Helvetica', sans-serif;
+      font-weight: bold;
       font-size: 2rem;
-      font-weight: 500;
       letter-spacing: -0.01em;
       margin-bottom: 2rem;
       border-left: 3px solid #e0e0e0;
@@ -36,38 +37,41 @@
 
     /* Tarjetas */
     .card {
-      background: white;
+      background: #1e1e1e;
       border-radius: 1.25rem;
       overflow: hidden;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.02);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
       transition: all 0.2s ease;
       cursor: pointer;
-      border: 1px solid #f0f0f0;
+      border: 1px solid #2a2a2a;
     }
 
     .card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 24px -12px rgba(0,0,0,0.15);
-      border-color: #e2e2e2;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+      border-color: #3a3a3a;
     }
 
     .card-img {
       width: 100%;
       aspect-ratio: 1 / 1;
       object-fit: cover;
-      background: #f5f5f5;
+      background: #1a1a1a;
       display: block;
     }
 
     .card h3 {
+      font-family: 'Century Gothic', 'Century Gothic', 'CenturyGothic', 'Arial Narrow', 'Helvetica', sans-serif;
+      font-weight: bold;
       font-size: 1.2rem;
-      font-weight: 500;
       margin: 0.75rem 1rem 0.5rem;
+      color: #ffffff;
     }
 
     .card p {
+      font-family: 'Cambria', 'Times New Roman', serif;
       font-size: 0.9rem;
-      color: #5e5e5e;
+      color: #a0a0a0;
       margin: 0 1rem 1rem;
     }
 
@@ -79,7 +83,7 @@
       background: none;
       border: none;
       font-size: 0.9rem;
-      color: #6b6b6b;
+      color: #888888;
       cursor: pointer;
       margin-bottom: 2rem;
       padding: 0.4rem 0;
@@ -87,7 +91,7 @@
     }
 
     .back-button:hover {
-      color: #000;
+      color: #cccccc;
     }
 
     /* Vista detalle */
@@ -109,8 +113,8 @@
       height: 320px;
       width: auto;
       border-radius: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      background: #fafafa;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      background: #1a1a1a;
       flex-shrink: 0;
       object-fit: cover;
       cursor: zoom-in;
@@ -123,16 +127,18 @@
     }
 
     .product-description {
+      font-family: 'Cambria', 'Times New Roman', serif;
       font-size: 1rem;
-      color: #2c2c2c;
+      color: #d0d0d0;
       margin: 1.5rem 0;
       white-space: pre-wrap;
       line-height: 1.5;
     }
 
     .category-description {
+      font-family: 'Cambria', 'Times New Roman', serif;
       font-size: 1.1rem;
-      color: #5e5e5e;
+      color: #b0b0b0;
       margin-bottom: 2rem;
       max-width: 800px;
     }
@@ -207,15 +213,15 @@
     .price {
       font-size: 1.5rem;
       font-weight: 600;
-      color: #111827;
+      color: #f0f0f0;
     }
 
     .btn-agotado {
-      background-color: #6b7280;
+      background-color: #ef4444;
     }
 
     .btn-agotado:hover {
-      background-color: #4b5563;
+      background-color: #dc2626;
     }
 
     /* Técnicas y Materiales */
@@ -228,11 +234,12 @@
     }
 
     .section-label {
+      font-family: 'Century Gothic', 'Century Gothic', 'CenturyGothic', 'Arial Narrow', 'Helvetica', sans-serif;
       font-size: 0.75rem;
-      font-weight: 700;
+      font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #9ca3af;
+      color: #707070;
       margin-bottom: 0.75rem;
       border-left: none;
       padding-left: 0;
@@ -248,12 +255,13 @@
     }
 
     .tecnicas-list li {
-      background: white;
-      border: 1px solid #e5e7eb;
+      font-family: 'Cambria', 'Times New Roman', serif;
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
       border-radius: 2rem;
       padding: 0.3rem 0.9rem;
       font-size: 0.875rem;
-      color: #374151;
+      color: #e0e0e0;
     }
 
     /* Botón de Video */
@@ -265,8 +273,8 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: #111827;
-      color: white;
+      background: #3a3a3a;
+      color: #ffffff;
       border: none;
       padding: 0.7rem 1.75rem;
       border-radius: 2.5rem;
@@ -278,7 +286,7 @@
     }
 
     .video-btn:hover {
-      background: #374151;
+      background: #4a4a4a;
     }
 
     /* Footer Social */
@@ -286,7 +294,7 @@
       text-align: center;
       padding: 2rem 1.5rem;
       margin-top: 4rem;
-      border-top: 1px solid #eaeaea;
+      border-top: 1px solid #333333;
     }
 
     .instagram-btn {
@@ -360,5 +368,6 @@
       }
       .detail-gallery img {
         height: 240px;
+        background: #1a1a1a;
       }
     }
