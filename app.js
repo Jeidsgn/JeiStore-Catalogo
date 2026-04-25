@@ -154,7 +154,7 @@ function renderDetalleProducto(productoId) {
         </div>
         <div class="product-description">${escapeHtml(prod.descripcion_larga || '').replace(/\n/g, '<br>')}</div>
         ${tecnicasHtml}
-        ${videoHtml}
+        ${infoHtml}
         ${botonHtml}
       </div>
     `;
