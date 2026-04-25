@@ -35,6 +35,15 @@ function renderCategorias() {
   const cats = appData.categorias.sort((a, b) => (a.orden || 0) - (b.orden || 0));
   const html = `
       <h1>Colecciones Jei Store</h1>
+      <p style="margin-bottom: 2rem; color: #5e5e5e; max-width: 600px; margin-left: auto; margin-right: auto;">
+        Bienvenido a Jei Store, un catálogo especial donde cada pieza cuenta una historia única.
+        Descubre artículos con etiquetas de <strong>disponible</strong> o <strong>agotado</strong> —
+        aunque los últimos no estén disponibles, puedes consultarlos y podrías conseguir uno exclusivo.
+        Cada producto tiene su propio botón para contactarme directamente por WhatsApp.
+        Algunos incluyen descripción detallada, técnicas, materiales, y más detalles.
+        <br><br>
+        Navega, descubre y realiza tus pedidos directamente.
+      </p>
       <div class="grid">
         ${cats.map(cat => {
     // Extraer la primera foto válida del primer producto de la categoría
@@ -83,6 +92,30 @@ function renderProductosPorCategoria(categoriaId) {
             </div>
           `;
   }).join('')}
+
+        <!-- Tarjeta de contacto como botón -->
+        <div class="card" data-nav="contacto-whatsapp">
+          <button class="contact-btn" data-nav="contacto-whatsapp" style="
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+          ">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.036 2.47a9.59 9.59 0 017.486 1.695 9.486 9.486 0 012.516 7.225 9.672 9.672 0 01-2.727 7.153 1 1 0 01-.238.186l-.305.184a1 1 0 01-.995.03 33.973 33.973 0 00-5.433-3.744 1 1 0 01-.905-.078 1 1 0 01-.308-.91 1 1 0 01.22-.538 32.275 32.275 0 002.792-4.146 1 1 0 01.138-.608 9.488 9.488 0 00-2.383-3.068 9.485 9.485 0 01-4.15-2.494A9.589 9.589 0 0112.036 2.47zm0 1a8.589 8.589 0 00-5.934 2.516 8.486 8.486 0 00-2.363 5.96 8.578 8.578 0 002.355 5.954 8.476 8.476 0 005.932 2.352 8.573 8.573 0 006.027-2.36 8.475 8.475 0 002.356-5.946 8.578 8.578 0 00-2.355-5.955 8.475 8.475 0 00-5.928-2.36z"/>
+            </svg>
+            Contactar por WhatsApp
+          </button>
+        </div>
       </div>
     `;
   document.getElementById('app').innerHTML = html;
@@ -125,10 +158,10 @@ function renderDetalleProducto(productoId) {
       </div>`
     : '';
 
-  // Video de proceso (opcional)
-  const videoHtml = prod.video_url
+  // Información adicional extra (video, fotogrametría 3D, etc.) (opcional)
+  const infoHtml = prod.video_url
     ? `<div class="product-video">
-        <a href="${escapeHtml(prod.video_url)}" target="_blank" rel="noopener noreferrer" class="video-btn">🎬 Ver video del proceso</a>
+        <a href="${escapeHtml(prod.video_url)}" target="_blank" rel="noopener noreferrer" class="video-btn">👀 Explorar más</a>
       </div>`
     : '';
 
